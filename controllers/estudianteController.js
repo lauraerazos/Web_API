@@ -162,7 +162,7 @@ function modificarxCriterio(req, res) {
 
     Modelo.updateMany({ nota: nota }, { $set: { nota: req.body.nota } })
         .then(data => {
-            console.log(data.nModified);
+            
             if (data.nModified === 0) {
                 res.status(404).json({
                     Mensaje: "No se encontraron registros"
