@@ -16,11 +16,36 @@ function listarEstudiantes(req, res) {
 }
 
 function entregarRegistro(req, res) {
-    console.log(req.params);
+    var id = req.params.id;
+    Modelo.find({_id:id}, (error, doc) => {
+        if (error) {
+            res.status(502).json({
+                Error: error.errmsg
+            });
+        } else {
+            res.status(200).json({
+                Mensaje: "Registro recuperado",
+                datos: doc
+            });
+        }
+    });
 }
 
 function modificarRegistro(req, res) {
-    console.log('modificar registro');
+    console.log(req.params);
+    console.log(req.body);
+
+    /* kennels.findByIdAndUpdate(
+        { _id: "5db6b26730f133b65dbbe459" },
+        { breed: "Great Dane" },
+        function(err, result) {
+          if (err) {
+            res.send(err);
+          } else {
+            res.send(result);
+          }
+        }
+      ); */
 }
 
 async function crearRegistro(req, res) {
@@ -45,7 +70,19 @@ async function crearRegistro(req, res) {
 }
 
 function eliminarRegistro(req, res) {
-    console.log('eliminar registro');
+    var id = req.params.id;
+    Modelo.findByIdAndDelete(id, (error, doc) => {
+        if (error) {
+            res.status(502).json({
+                Error: error.errmsg
+            });
+        } else {
+            res.status(200).json({
+                Mensaje: "El registro fue eliminado correctamente",
+                datos: doc
+            });
+        }
+    });
 }
 
 function modificarxCriterio(req, res) {
