@@ -2,16 +2,23 @@ var Modelo = require('../model/estudiante');
 
 function listarEstudiantes(req, res) {
 
-    Modelo.find({}, {nombre:1,apellido:1}, (error, doc) => {
+    Modelo.find({}, { nombre: 1, apellido: 1 }, (error, doc) => {
+        
         if (error) {
             res.status(502).json({
                 Error: error.errmsg
             });
         } else {
-            res.status(200).json({
-                Mensaje: "Datos recuperados",
-                datos: doc
-            });
+            if (doc.length === 0) {
+                res.status(404).json({
+                    Mensaje: "No hay ningún registro"
+                });
+            } else {
+                res.status(200).json({
+                    Mensaje: "Datos recuperados",
+                    datos: doc
+                });
+            }
         }
     });
 }
@@ -21,7 +28,7 @@ function entregarRegistro(req, res) {
     var id = req.params.id;
 
     Modelo.find({ _id: id }, (error, doc) => {
-        console.log(doc.length);
+        
         if (error) {
             res.status(502).json({
                 Error: error.errmsg
@@ -108,7 +115,7 @@ function eliminarRegistro(req, res) {
     var id = req.params.id;
 
     Modelo.findByIdAndDelete(id, (error, doc) => {
-        console.log(doc);
+    
         if (error) {
             res.status(502).json({
                 Error: error.errmsg
@@ -126,6 +133,21 @@ function eliminarRegistro(req, res) {
             }
         }
     });
+}
+
+function eliminarTodo(req, res) {
+    Modelo.deleteMany({})
+        .then(data => {
+            res.json({
+                Mensaje: `Se eliminaron ${data.deletedCount} estudiantes correctamente`
+            });
+        })
+        .catch(err => {
+            res.status(500).json({
+                Mensaje:
+                    err.message || "Ocurrió algún error en el proceso de eliminación"
+            });
+        });
 }
 
 function modificarxCriterio(req, res) {
@@ -183,4 +205,4 @@ async function entregarPromedio(req, res) {
     }
 }
 
-module.exports = {listarEstudiantes, entregarPromedio, entregarRegistro, modificarRegistro, modificarxCriterio, eliminarRegistro, crearRegistro}
+module.exports = {listarEstudiantes, entregarPromedio, entregarRegistro, modificarRegistro, modificarxCriterio, eliminarRegistro, eliminarTodo, crearRegistro}

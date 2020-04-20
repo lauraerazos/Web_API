@@ -7,6 +7,7 @@ router.get('/registro/:id', controlador.entregarRegistro);
 router.put('/registro/:id', controlador.modificarRegistro);
 router.post('/registro', controlador.crearRegistro);
 router.delete('/registro/:id', controlador.eliminarRegistro);
+router.delete('/coleccion', controlador.eliminarTodo);
 router.put('/coleccion/:nota', controlador.modificarxCriterio);
 router.get('/notas', controlador.entregarPromedio);
 
